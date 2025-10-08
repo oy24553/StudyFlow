@@ -3,6 +3,9 @@ import Chart7d from '../components/Chart7d';
 import StudyTimer from '../components/StudyTimer';
 import client from '../api/client';
 import ChartCourseTop from '../components/ChartCourseTop';
+import PageEnter from '../components/PageEnter';
+import AnimatedCard from '../components/AnimatedCard';
+import PrimaryButton from '../components/PrimaryButton';
 
 export default function Dashboard() {
     const [stats, setStats] = useState({ weekMins: 0, streak: 0 });
@@ -34,21 +37,26 @@ export default function Dashboard() {
     }, []);
 
     return (
-        <div className="vstack">
-            <div className="hstack" style={{ gap: 12 }}>
-                <div className="card"><div className="label">本周学习总时长</div><div style={{ fontSize: 22, fontWeight: 700 }}>{fmtM(stats.weekMins)}</div></div>
-                <div className="card"><div className="label">连续学习天数</div><div style={{ fontSize: 22, fontWeight: 700 }}>{stats.streak} 天</div></div>
+        <PageEnter>
+            <div className="vstack">
+                <div className="hstack" style={{ gap: 12 }}>
+                    <AnimatedCard><div className="stat"><div className="label">本周学习总时长</div><div className="value">{fmtM(stats.weekMins)}</div></div></AnimatedCard>
+                    <AnimatedCard delay={0.05}><div className="stat"><div className="label">连续学习天数</div><div className="value">{stats.streak} 天</div></div></AnimatedCard>
+                </div>
+
+                <AnimatedCard delay={0.1}>
+                    {/* 你的 StudyTimer */}
+                    <StudyTimer />
+                </AnimatedCard>
+
+                <AnimatedCard delay={0.15}>
+                    <div className="label">近 7 天学习时长</div>
+                    <Chart7d />
+                </AnimatedCard>
+
+                {/* 如果有课程Top图，同样用 <AnimatedCard delay={0.2}> 包裹 */}
             </div>
-            <StudyTimer />
-            <div className="card vstack">
-                <div className="label">近 7 天学习时长</div>
-                <Chart7d />
-            </div>
-            <div className="card vstack">
-                <div className="label">近 30 天课程 Top 5（分钟）</div>
-                <ChartCourseTop />
-            </div>
-        </div>
+        </PageEnter>
     );
 }
 function fmtM(m) { const h = Math.floor(m / 60), mm = m % 60; return h ? `${h}h ${mm}m` : `${mm}m`; }

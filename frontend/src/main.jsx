@@ -22,7 +22,6 @@ function Layout({ children }) {
       <header className="hstack" style={{ justifyContent: 'space-between' }}>
         <nav className="hstack" style={{ gap: 12 }}>
           <Link to="/">首页</Link>
-          <Link to="/study">学习</Link>
           <Link to="/workout">健身</Link>
         </nav>
         <a href="/login">退出/登录</a>
@@ -50,7 +49,6 @@ const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       { index: true, element: <Authed /> },
-      { path: 'study', element: <Layout><Study /></Layout> },
       { path: 'workout', element: <Layout><Workout /></Layout> },
     ]
   }

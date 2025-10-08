@@ -3,6 +3,7 @@ import client from '../api/client';
 import {
     LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer
 } from 'recharts';
+import Skeleton from './Skeleton';
 
 export default function Chart7d() {
     const [data, setData] = useState([]);
@@ -36,6 +37,7 @@ export default function Chart7d() {
 
     if (loading) return <div>图表加载中…</div>;
     if (err) return <div>{err}</div>;
+    if (loading) return <div className="card"><Skeleton height={220} radius={12} /></div>;
 
     return (
         <div style={{ width: '100%', height: 300 }}>
@@ -45,7 +47,7 @@ export default function Chart7d() {
                     <XAxis dataKey="day" />
                     <YAxis tickFormatter={minsFmt} />
                     <Tooltip formatter={(v) => minsFmt(v)} labelFormatter={(l) => `日期：${l}`} />
-                    <Line type="monotone" dataKey="mins" />
+                    <Line type="monotone" dataKey="mins" isAnimationActive animationDuration={600} animationBegin={0} />
                 </LineChart>
             </ResponsiveContainer>
         </div>
