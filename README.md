@@ -16,7 +16,7 @@ Track your **study** and **workout** progress in one place. Create sessions, log
 - **Tooling**: dotenv, helmet
 ---
 
-## ✨ Features
+## Features
 
 - **Auth**: email + password (JWT)
 - **Study**: courses, study sessions, notes, methods (deep/pomodoro/review)
