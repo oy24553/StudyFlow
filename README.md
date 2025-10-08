@@ -1,14 +1,13 @@
-# Study-Fitness APP
+# StudyFlow
 
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
-![VSCode](https://img.shields.io/badge/VS_Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
 
 ## Project Overview
-Track your **study** progress in one place. Create sessions, log workouts/sets, see 7-day trends, and view course top charts. Built as a learning-friendly, production-ready template.
+A modern full-stack study tracker built with Node.js, Express, MongoDB, and React.It supports both **normal timing** and **Pomodoro sessions**, provides detailed weekly trends and heatmaps, and stores all your data securely in MongoDB.
 
 ## Tech stack
 - **Backend**: Node.js, Express.js, MongoDB (Atlas), Mongoose, JWT, bcrypt
@@ -19,12 +18,13 @@ Track your **study** progress in one place. Create sessions, log workouts/sets, 
 ## Features
 
 - **Auth**: email + password (JWT)
-- **Study**: courses, study sessions, notes, methods (deep/pomodoro/review)
-- **Workout**: workouts (push/pull/legs/…), exercise logs with sets (reps/weight/RPE)
-- **Dashboard**: 7-day study time line chart, weekly totals, streaks
-- **Stats**: quick aggregations (7-day study minutes, weekly workout counts)
-- **CSV export** (study list)
-- **CORS + security** (helmet, rate-limit)
+- **Two study modes**:
+   - Normal Timer — start & stop freely 
+   - Pomodoro Timer — automatic focus and break cycles
+
+- **Course Management**: Create, edit, and select courses. Link every study session to a specific course
+
+- **Dashboard Analytics**: Weekly total time & continuous streaks. 7-day line chart of study minutes. 7×24 heatmap showing your most productive hours
 
 
 ## Installation
