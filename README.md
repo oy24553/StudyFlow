@@ -8,7 +8,7 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
 ## Project Overview
-Track your **study** and **workout** progress in one place. Create sessions, log workouts/sets, see 7-day trends, and view course top charts. Built as a learning-friendly, production-ready template.
+Track your **study** progress in one place. Create sessions, log workouts/sets, see 7-day trends, and view course top charts. Built as a learning-friendly, production-ready template.
 
 ## Tech stack
 - **Backend**: Node.js, Express.js, MongoDB (Atlas), Mongoose, JWT, bcrypt

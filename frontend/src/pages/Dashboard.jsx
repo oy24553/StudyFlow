@@ -6,6 +6,7 @@ import ChartCourseTop from '../components/ChartCourseTop';
 import PageEnter from '../components/PageEnter';
 import AnimatedCard from '../components/AnimatedCard';
 import PrimaryButton from '../components/PrimaryButton';
+import ChartHeatmap from '../components/ChartHeatmap';
 
 export default function Dashboard() {
     const [stats, setStats] = useState({ weekMins: 0, streak: 0 });
@@ -52,6 +53,10 @@ export default function Dashboard() {
                 <AnimatedCard delay={0.15}>
                     <div className="label">近 7 天学习时长</div>
                     <Chart7d />
+                </AnimatedCard>
+                <AnimatedCard delay={0.2}>
+                    <div className="label">学习时段热力图</div>
+                    <ChartHeatmap days={30} />
                 </AnimatedCard>
 
                 {/* 如果有课程Top图，同样用 <AnimatedCard delay={0.2}> 包裹 */}
