@@ -16,13 +16,13 @@ export default function Chart7d() {
             setLoading(true);
             const res = await client.get('/stats/study-7d');
             const rows = (res.data?.data || []).map(d => ({
-                day: d._id,                   // 形如 '2025-10-05'
+                day: d._id,                   // e.g., '2025-10-05'
                 mins: Math.round(d.total || 0)
             }));
             setData(rows);
         } catch (e) {
             console.error(e);
-            setErr('加载失败');
+            setErr('Failed to load');
         } finally {
             setLoading(false);
         }
@@ -35,7 +35,7 @@ export default function Chart7d() {
         return () => window.removeEventListener('study-updated', fn);
     }, []);
 
-    if (loading) return <div>图表加载中…</div>;
+    if (loading) return <div>Loading chart…</div>;
     if (err) return <div>{err}</div>;
     if (loading) return <div className="card"><Skeleton height={220} radius={12} /></div>;
 
@@ -46,7 +46,7 @@ export default function Chart7d() {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="day" />
                     <YAxis tickFormatter={minsFmt} />
-                    <Tooltip formatter={(v) => minsFmt(v)} labelFormatter={(l) => `日期：${l}`} />
+                    <Tooltip formatter={(v) => minsFmt(v)} labelFormatter={(l) => `Date: ${l}`} />
                     <Line type="monotone" dataKey="mins" isAnimationActive animationDuration={600} animationBegin={0} />
                 </LineChart>
             </ResponsiveContainer>

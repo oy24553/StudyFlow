@@ -13,7 +13,7 @@ export default function Dashboard() {
 
     const calc = (rows) => {
         const weekMins = Math.round(rows.reduce((s, r) => s + (r.total || r.mins || 0), 0));
-        // 连续天数（倒序找连续>0的天数）
+        // Streak days (scan backward for consecutive >0 days)
         const byDay = new Map(rows.map(r => [r._id || r.day, Math.round(r.total || r.mins || 0)]));
         let streak = 0, d = new Date();
         for (let i = 0; i < 30; i++) {
@@ -41,25 +41,25 @@ export default function Dashboard() {
         <PageEnter>
             <div className="vstack">
                 <div className="hstack" style={{ gap: 12 }}>
-                    <AnimatedCard><div className="stat"><div className="label">本周学习总时长</div><div className="value">{fmtM(stats.weekMins)}</div></div></AnimatedCard>
-                    <AnimatedCard delay={0.05}><div className="stat"><div className="label">连续学习天数</div><div className="value">{stats.streak} 天</div></div></AnimatedCard>
+                    <AnimatedCard><div className="stat"><div className="label">Total study time this week</div><div className="value">{fmtM(stats.weekMins)}</div></div></AnimatedCard>
+                    <AnimatedCard delay={0.05}><div className="stat"><div className="label">Consecutive study days</div><div className="value">{stats.streak} days</div></div></AnimatedCard>
                 </div>
 
                 <AnimatedCard delay={0.1}>
-                    {/* 你的 StudyTimer */}
+                    {/* Your StudyTimer */}
                     <StudyTimer />
                 </AnimatedCard>
 
                 <AnimatedCard delay={0.15}>
-                    <div className="label">近 7 天学习时长</div>
+                    <div className="label">Study time in last 7 days</div>
                     <Chart7d />
                 </AnimatedCard>
                 <AnimatedCard delay={0.2}>
-                    <div className="label">学习时段热力图</div>
+                    <div className="label">Study hours heatmap</div>
                     <ChartHeatmap days={30} />
                 </AnimatedCard>
 
-                {/* 如果有课程Top图，同样用 <AnimatedCard delay={0.2}> 包裹 */}
+                {/* If adding a course top chart, also wrap it with <AnimatedCard delay={0.2}> */}
             </div>
         </PageEnter>
     );

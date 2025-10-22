@@ -29,13 +29,13 @@ export default function StudyForm() {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="vstack">
             <div className="hstack" style={{ gap: 8, flexWrap: 'wrap' }}>
-                <label className="vstack"><span className="label">开始</span>
+                <label className="vstack"><span className="label">Start</span>
                     <input className="input" type="datetime-local" {...register('startAt')} />
                 </label>
-                <label className="vstack"><span className="label">结束</span>
+                <label className="vstack"><span className="label">End</span>
                     <input className="input" type="datetime-local" {...register('endAt')} />
                 </label>
-                <label className="vstack"><span className="label">方式</span>
+                <label className="vstack"><span className="label">Method</span>
                     <select className="input" {...register('method')}>
                         <option value="deep">deep</option>
                         <option value="pomodoro">pomodoro</option>
@@ -44,15 +44,15 @@ export default function StudyForm() {
                 </label>
             </div>
 
-            <label className="vstack"><span className="label">课程</span>
+            <label className="vstack"><span className="label">Course</span>
                 <CoursePicker value={watch('courseId')} onChange={(id) => setValue('courseId', id || '')} allowNone />
             </label>
 
-            <label className="vstack"><span className="label">备注</span>
-                <input className="input" placeholder="学习要点 / 反思" {...register('notes')} />
+            <label className="vstack"><span className="label">Notes</span>
+                <input className="input" placeholder="Study notes / reflections" {...register('notes')} />
             </label>
 
-            <button className="btn">保存</button>
+            <button className="btn">Save</button>
         </form>
     );
 }

@@ -1,22 +1,22 @@
-/* ===== 基础与主题变量 ===== */
+/* ===== Base & Theme Variables ===== */
 :root {
-  /* 颜色 */
+  /* Colors */
   --bg: #f6f7f9;
   --card: #ffffff;
   --text: #111827;
   --muted: #667085;
   --border: #e5e7eb;
   --primary: #6366f1;
-  /* 主色(靛蓝) */
+  /* Primary (Indigo) */
   --primary-weak: rgba(99, 102, 241, .12);
   --danger: #ef4444;
 
-  /* 外观 */
+  /* Appearance */
   --radius: 12px;
   --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .10);
   --focus: 0 0 0 3px rgba(99, 102, 241, .35);
 
-  /* 尺寸 */
+  /* Sizing */
   --container: 1100px;
 }
 
@@ -43,7 +43,7 @@ body {
   line-height: 1.45;
 }
 
-/* ===== 布局与通用组件 ===== */
+/* ===== Layout & Common Components ===== */
 .container {
   max-width: var(--container);
   margin: 0 auto;
@@ -57,7 +57,7 @@ body {
   padding: 16px;
   box-shadow: var(--shadow);
   overflow-x: auto;
-  /* 小屏表格横向可滚 */
+  /* Tables can scroll horizontally on small screens */
 }
 
 .hstack {
@@ -72,7 +72,7 @@ body {
   gap: 12px;
 }
 
-/* 导航 */
+/* Navigation */
 .nav a {
   color: var(--primary);
   text-decoration: none;
@@ -89,13 +89,13 @@ body {
   background: var(--primary-weak);
 }
 
-/* 标签/说明文字 */
+/* Labels / Helper Text */
 .label {
   font-size: 12px;
   color: var(--muted);
 }
 
-/* 统计卡（数值更醒目） */
+/* Stat Cards (emphasize numbers) */
 .stat .value {
   font-size: 28px;
   font-weight: 800;
@@ -106,7 +106,7 @@ body {
   color: var(--muted);
 }
 
-/* 计时数字（等宽更稳） */
+/* Timer digits (monospace for stability) */
 .timer {
   font-variant-numeric: tabular-nums;
   letter-spacing: 1px;
@@ -114,7 +114,7 @@ body {
   font-weight: 800;
 }
 
-/* ===== 表单控件 ===== */
+/* ===== Form Controls ===== */
 .input {
   height: 36px;
   padding: 8px 10px;
@@ -143,7 +143,7 @@ input.input::placeholder {
   color: var(--muted);
 }
 
-/* 按钮 */
+/* Buttons */
 .btn {
   height: 36px;
   padding: 0 12px;
@@ -172,7 +172,7 @@ html.dark .btn {
   cursor: not-allowed;
 }
 
-/* 按钮变体（可选：在 JSX 上加 className="btn btn-primary"） */
+/* Button variants (optional: use className="btn btn-primary" in JSX) */
 .btn-primary {
   border-color: var(--primary);
   background: var(--primary);
@@ -195,7 +195,7 @@ html.dark .btn {
   background-color: var(--danger);
 }
 
-/* 徽章（可用于课程标签等） */
+/* Badges (e.g., course tags) */
 .badge {
   display: inline-block;
   padding: 2px 8px;
@@ -205,7 +205,7 @@ html.dark .btn {
   color: #3730a3;
 }
 
-/* ===== 表格 ===== */
+/* ===== Tables ===== */
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -227,7 +227,7 @@ html.dark .table tbody tr:hover {
   background: rgba(255, 255, 255, .03);
 }
 
-/* ===== 响应式优化 ===== */
+/* ===== Responsive Tweaks ===== */
 @media (max-width: 768px) {
   .container {
     padding: 16px;
@@ -250,7 +250,7 @@ html.dark .table tbody tr:hover {
   }
 }
 
-/* 计时数字（等宽） */
+/* Timer digits (monospace) */
 .timer {
   font-variant-numeric: tabular-nums;
   letter-spacing: 1px;
@@ -258,7 +258,7 @@ html.dark .table tbody tr:hover {
   font-weight: 800;
 }
 
-/* 录制红点 */
+/* Recording dot */
 .rec-dot {
   width: 10px;
   height: 10px;
@@ -286,7 +286,7 @@ html.dark .table tbody tr:hover {
   }
 }
 
-/* Ripple（配合 useRipple + .ripple 类使用） */
+/* Ripple (used with useRipple + .ripple class) */
 .ripple {
   position: relative;
   overflow: hidden;
@@ -309,7 +309,7 @@ html.dark .table tbody tr:hover {
   }
 }
 
-/* 骨架屏（发光条） */
+/* Skeleton loader (shimmer) */
 .skeleton {
   width: 100%;
   background: linear-gradient(90deg, rgba(0, 0, 0, .05) 25%, rgba(0, 0, 0, .08) 37%, rgba(0, 0, 0, .05) 63%);
@@ -331,7 +331,7 @@ html.dark .skeleton {
   background: linear-gradient(90deg, rgba(255, 255, 255, .06) 25%, rgba(255, 255, 255, .12) 37%, rgba(255, 255, 255, .06) 63%);
 }
 
-/* === 热力图 === */
+/* === Heatmap === */
 .heat-grid {
   display: grid;
   grid-template-columns: 40px repeat(24, 1fr);
@@ -382,7 +382,7 @@ html.dark .skeleton {
   background: linear-gradient(90deg, rgba(99, 102, 241, .05), rgba(99, 102, 241, .25), rgba(99, 102, 241, .6), rgba(99, 102, 241, 1));
 }
 
-/* === 番茄环形进度（纯 CSS conic-gradient） === */
+/* === Pomodoro circular progress (pure CSS conic-gradient) === */
 .ring {
   --size: 84px;
   width: var(--size);

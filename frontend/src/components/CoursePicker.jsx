@@ -26,11 +26,11 @@ export default function CoursePicker({ value, onChange, allowNone=true }) {
   return (
     <div className="hstack" style={{gap:8, flexWrap:'wrap'}}>
       <select className="input" value={value || ''} onChange={e=>onChange?.(e.target.value || null)} disabled={loading}>
-        {allowNone && <option value="">未分配课程</option>}
+        {allowNone && <option value="">No course</option>}
         {courses.map(c => <option key={c._id || c.id} value={c._id || c.id}>{c.name}</option>)}
       </select>
-      <input className="input" placeholder="新建课程名" value={newName} onChange={e=>setNewName(e.target.value)} />
-      <button className="btn" onClick={add}>＋新建</button>
+      <input className="input" placeholder="New course name" value={newName} onChange={e=>setNewName(e.target.value)} />
+      <button className="btn" onClick={add}>＋Create</button>
     </div>
   );
 }

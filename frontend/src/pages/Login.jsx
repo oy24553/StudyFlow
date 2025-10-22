@@ -12,16 +12,16 @@ export default function Login() {
     };
     return (
         <div className="container" style={{ maxWidth: 420 }}>
-            <h1>登录</h1>
+            <h1>Login</h1>
             <form onSubmit={handleSubmit(onSubmit)} className="vstack">
                 <label className="vstack"><span className="label">Email</span>
                     <input className="input" placeholder="you@example.com" {...register('email', { required: true })} />
                 </label>
-                <label className="vstack"><span className="label">密码</span>
+                <label className="vstack"><span className="label">Password</span>
                     <input className="input" type="password" placeholder="••••••" {...register('password', { required: true })} />
                 </label>
-                <button className="btn">登录</button>
-                <div>还没有账号？<Link to="/register">去注册</Link></div>
+                <button className="btn">Login</button>
+                <div>Don’t have an account? <Link to="/register">Sign up</Link></div>
             </form>
         </div>
     );

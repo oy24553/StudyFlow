@@ -21,9 +21,9 @@ function Layout({ children }) {
     <div className="container vstack">
       <header className="hstack" style={{ justifyContent: 'space-between' }}>
         <nav className="hstack" style={{ gap: 12 }}>
-          <Link to="/">首页</Link>
+          <Link to="/">Home</Link>
         </nav>
-        <a href="/login">退出/登录</a>
+        <a href="/login">Logout/Login</a>
       </header>
       {children}
     </div>

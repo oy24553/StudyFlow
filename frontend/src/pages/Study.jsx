@@ -18,7 +18,7 @@ export default function Study() {
       const from = new Date();
       from.setDate(to.getDate() - (range === '30d' ? 30 : 7));
 
-      // 只有在选择了具体课程时才带上 course 参数；“未分配”走前端过滤
+      // Only include course param when a specific course is selected; handle "Unassigned" via frontend filtering
       const params = { from: from.toISOString(), to: to.toISOString() };
       if (filterCourse !== 'all' && filterCourse !== 'uncat') params.course = filterCourse;
 
@@ -40,7 +40,7 @@ export default function Study() {
 
   useEffect(() => { load(); }, [range, filterCourse]);
 
-  // 监听“学习已更新”（StudyTimer/StudyForm 成功保存后触发）→ 自动刷新
+  // Listen for "study-updated" (emitted after StudyTimer/StudyForm saves) → auto refresh
   useEffect(() => {
     const fn = () => load();
     window.addEventListener('study-updated', fn);
@@ -48,9 +48,9 @@ export default function Study() {
   }, []);
 
   const remove = async (id) => {
-    if (!confirm('确定删除该会话？')) return;
+    if (!confirm('Delete this session?')) return;
     await deleteStudySession(id);
-    window.dispatchEvent(new Event('study-updated')); // 让仪表盘/其他图表同步刷新
+    window.dispatchEvent(new Event('study-updated')); // Keep dashboard/other charts in sync
     load();
   };
 
@@ -69,26 +69,26 @@ export default function Study() {
       `study_${range}${filterCourse !== 'all' ? '_' + filterCourse : ''}.csv`,
       rows,
       [
-        { label: '开始', value: r => fmtDT(r.startAt) },
-        { label: '结束', value: r => r.endAt ? fmtDT(r.endAt) : '' },
-        { label: '课程', value: r => nameById.get(String(r.courseId)) || '未分配' },
-        { label: '方式', value: r => r.method || '' },
-        { label: '备注', value: r => r.notes || '' },
-        { label: '时长(分钟)', value: r => Math.round(durationMins(r)) }
+        { label: 'Start', value: r => fmtDT(r.startAt) },
+        { label: 'End', value: r => r.endAt ? fmtDT(r.endAt) : '' },
+        { label: 'Course', value: r => nameById.get(String(r.courseId)) || 'Unassigned' },
+        { label: 'Method', value: r => r.method || '' },
+        { label: 'Notes', value: r => r.notes || '' },
+        { label: 'Duration (min)', value: r => Math.round(durationMins(r)) }
       ]
     );
   };
 
   return (
     <div className="vstack">
-      {/* 快速添加 */}
+      {/* Quick add */}
       <div className="card">
         <div className="hstack" style={{ justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-          <div className="label">快速添加学习会话</div>
+          <div className="label">Quickly add study session</div>
           <div className="hstack" style={{ gap: 8, flexWrap: 'wrap' }}>
             <select className="input" value={range} onChange={e => setRange(e.target.value)}>
-              <option value="7d">近7天</option>
-              <option value="30d">近30天</option>
+              <option value="7d">Last 7 days</option>
+              <option value="30d">Last 30 days</option>
             </select>
 
             <select
@@ -96,20 +96,20 @@ export default function Study() {
               value={filterCourse}
               onChange={e => setFilterCourse(e.target.value)}
             >
-              <option value="all">全部课程</option>
+              <option value="all">All courses</option>
               {courses.map(c => (
                 <option key={c._id || c.id} value={c._id || c.id}>
                   {c.name}
                 </option>
               ))}
-              <option value="uncat">未分配</option>
+              <option value="uncat">Unassigned</option>
             </select>
 
             <button className="btn" onClick={load} disabled={loading}>
-              {loading ? '刷新中…' : '刷新'}
+              {loading ? 'Refreshing…' : 'Refresh'}
             </button>
             <button className="btn" onClick={onExport} disabled={!rows.length}>
-              导出 CSV
+              Export CSV
             </button>
           </div>
         </div>
@@ -117,24 +117,22 @@ export default function Study() {
         <StudyForm />
       </div>
 
-      {/* 列表 */}
+      {/* List */}
       <div className="card">
         <div className="hstack" style={{ justifyContent: 'space-between' }}>
-          <div className="label">
-            学习会话列表（{rows.length} 条，合计 {fmtMins(totalMins)}）
-          </div>
+          <div className="label">Study sessions ({rows.length} items, total {fmtMins(totalMins)})</div>
         </div>
 
         <table className="table">
           <thead>
             <tr>
-              <th>开始</th>
-              <th>结束</th>
-              <th>课程</th>
-              <th>方式</th>
-              <th>备注</th>
-              <th>时长</th>
-              <th>操作</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Course</th>
+              <th>Method</th>
+              <th>Notes</th>
+              <th>Duration</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -142,18 +140,18 @@ export default function Study() {
               <tr key={s._id || s.id}>
                 <td>{fmtDT(s.startAt)}</td>
                 <td>{s.endAt ? fmtDT(s.endAt) : '-'}</td>
-                <td>{nameById.get(String(s.courseId)) || '未分配'}</td>
+                <td>{nameById.get(String(s.courseId)) || 'Unassigned'}</td>
                 <td>{s.method || '-'}</td>
                 <td>{s.notes || '-'}</td>
                 <td>{fmtMins(durationMins(s))}</td>
                 <td>
-                  <button className="btn" onClick={() => remove(s._id || s.id)}>删除</button>
+                  <button className="btn" onClick={() => remove(s._id || s.id)}>Delete</button>
                 </td>
               </tr>
             ))}
             {!rows.length && (
               <tr>
-                <td colSpan="7">暂无数据</td>
+                <td colSpan="7">No data</td>
               </tr>
             )}
           </tbody>

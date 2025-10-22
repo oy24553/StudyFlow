@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getStudyHeatmap } from '../api/stats';
 
-const DAYS = ['一','二','三','四','五','六','日']; // ISO 周：1..7
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']; // ISO week: 1..7
 
 export default function ChartHeatmap({ days = 30 }){
   const [grid, setGrid] = useState(Array.from({length:7}, ()=>Array(24).fill(0)));
@@ -20,26 +20,26 @@ export default function ChartHeatmap({ days = 30 }){
       if (g[d][h] > mx) mx = g[d][h];
     }
     setGrid(g);
-    setMaxM(Math.max(30, Math.min(120, mx))); // 颜色上限：30~120分钟之间自适应
+    setMaxM(Math.max(30, Math.min(120, mx))); // Color cap: auto between 30~120 minutes
   };
 
   useEffect(()=>{ load(); const fn=()=>load(); window.addEventListener('study-updated', fn); return ()=>window.removeEventListener('study-updated', fn); }, [days]);
 
   return (
     <div className="vstack">
-      <div className="label">近 {days} 天学习热力图（深色=该时间段分钟数更多）</div>
+      <div className="label">Study heatmap for last {days} days (darker = more minutes in slot)</div>
       <div className="heat-grid">
-        {/* 头部小时标签 */}
+        {/* Hour labels header */}
         <div></div>
         {Array.from({length:24},(_,h)=><div key={'h'+h} className="heat-hour">{h}</div>)}
 
-        {/* 行：周一..周日 */}
+        {/* Rows: Monday..Sunday */}
         {grid.map((row, di)=>(
           <>
-            <div key={'dlabel'+di} className="heat-day">周{DAYS[di]}</div>
+            <div key={'dlabel'+di} className="heat-day">{DAYS[di]}</div>
             {row.map((mins, hi)=>{
               const alpha = Math.min(1, mins / maxM); // 0..1
-              return <div key={`c${di}-${hi}`} className="heat-cell" style={{'--alpha': alpha, '--hint': `"${mins}m"`}} title={`${mins} 分钟`} />;
+              return <div key={`c${di}-${hi}`} className="heat-cell" style={{'--alpha': alpha, '--hint': `"${mins}m"`}} title={`${mins} minutes`} />;
             })}
           </>
         ))}

@@ -1,4 +1,4 @@
-// 课程相关 API
+// Course-related API
 import client from './client';
 
 export async function listCourses() {

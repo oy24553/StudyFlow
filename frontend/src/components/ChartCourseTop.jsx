@@ -21,7 +21,7 @@ export default function ChartCourseTop() {
       acc.set(key, (acc.get(key) || 0) + Math.max(0, dur));
     }
     const rows = [...acc.entries()]
-      .map(([k, mins]) => ({ name: k === 'uncat' ? '未分配' : (nameById.get(k) || '未知课程'), mins: Math.round(mins) }))
+      .map(([k, mins]) => ({ name: k === 'uncat' ? 'Unassigned' : (nameById.get(k) || 'Unknown course'), mins: Math.round(mins) }))
       .sort((a, b) => b.mins - a.mins)
       .slice(0, 5);
     setData(rows);
