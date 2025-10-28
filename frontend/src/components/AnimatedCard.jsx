@@ -12,3 +12,4 @@ export default function AnimatedCard({ children, delay = 0 }) {
     </motion.div>
   );
 }
+
