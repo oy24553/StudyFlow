@@ -195,6 +195,29 @@ html.dark .btn {
   background-color: var(--danger);
 }
 
+/* Demo CTA: gradient + shimmer overlay */
+.btn-demo {
+  position: relative;
+  border-color: transparent;
+  color: #fff;
+  background: linear-gradient(110deg, #7c3aed, #6366f1, #06b6d4);
+  background-size: 200% 100%;
+  animation: demo-gradient 6s ease-in-out infinite;
+}
+.btn-demo:hover { filter: brightness(1.05); }
+.btn-demo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent, rgba(255,255,255,.35), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+  border-radius: 10px;
+  pointer-events: none;
+}
+@keyframes demo-gradient { 0%{background-position:0 0} 50%{background-position:100% 0} 100%{background-position:0 0} }
+@keyframes shimmer { from{ background-position: 200% 0 } to{ background-position: -200% 0 } }
+
 /* Badges (e.g., course tags) */
 .badge {
   display: inline-block;
