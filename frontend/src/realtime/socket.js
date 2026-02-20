@@ -14,7 +14,6 @@ export function getSocket() {
   });
 
   socket.on('connect_error', (err) => {
-    // eslint-disable-next-line no-console
     console.error('socket connect_error', err?.message || err);
   });
 
@@ -31,4 +30,3 @@ export function connectSocket() {
 export function disconnectSocket() {
   if (socket) socket.disconnect();
 }
-

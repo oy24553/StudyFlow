@@ -1,15 +1,15 @@
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 
-export default function AnimatedCard({ children, delay = 0 }) {
+export default function AnimatedCard({ children, delay = 0, className = '', ...props }) {
   return (
-    <motion.div
-      className="card"
+    <Motion.div
+      className={`card ${className}`.trim()}
+      {...props}
       initial={{ y: 12, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: 'easeOut', delay }}
     >
       {children}
-    </motion.div>
+    </Motion.div>
   );
 }
-

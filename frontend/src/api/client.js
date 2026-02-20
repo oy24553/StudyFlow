@@ -32,7 +32,9 @@ client.interceptors.response.use(
     if (status === 401) {
       try {
         localStorage.removeItem('token');
-      } catch (_) {}
+      } catch {
+        // noop (e.g. storage unavailable)
+      }
       if (typeof window !== 'undefined') {
         const cur =
           window.location.pathname +

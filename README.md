@@ -64,6 +64,9 @@ VITE_API_BASE=http://localhost:4000/api
 - `GET /api/stats/study-7d` — last 7 days minutes by day.
 - `GET /api/stats/study-heatmap?from&to` — minutes by ISO day‑of‑week (1..7) and hour (0..23).
 - `GET /api/stats/study-by-hour?from&to` — total minutes by hour.
+- `GET /api/stats/course-top?from&to&limit` — top courses by minutes.
+- `GET /api/stats/method-breakdown?from&to` — minutes breakdown by method.
+- `GET /api/stats/study-series?from&to&bucket=day|week|month&tz` — generic time series.
 
 ## Endpoints (rooms)
 - `GET /api/rooms` — list rooms you joined.

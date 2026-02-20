@@ -1,33 +1,24 @@
 import { useEffect, useState } from 'react';
-import { listStudySessions } from '../api/studySessions';
-import { listCourses } from '../api/courses';
+import { getCourseTop } from '../api/stats';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 
-export default function ChartCourseTop() {
+export default function ChartCourseTop({ days = 30, limit = 5 }) {
   const [data, setData] = useState([]);
 
   const load = async () => {
     const to = new Date();
-    const from = new Date(); from.setDate(to.getDate() - 30);
-    const [sessions, courses] = await Promise.all([
-      listStudySessions({ from: from.toISOString(), to: to.toISOString() }),
-      listCourses()
-    ]);
-    const nameById = new Map(courses.map(c => [String(c._id || c.id), c.name]));
-    const acc = new Map();
-    for (const s of sessions) {
-      const dur = s.endAt ? (new Date(s.endAt) - new Date(s.startAt)) / 60000 : 0;
-      const key = String(s.courseId || 'uncat');
-      acc.set(key, (acc.get(key) || 0) + Math.max(0, dur));
-    }
-    const rows = [...acc.entries()]
-      .map(([k, mins]) => ({ name: k === 'uncat' ? 'Unassigned' : (nameById.get(k) || 'Unknown course'), mins: Math.round(mins) }))
-      .sort((a, b) => b.mins - a.mins)
-      .slice(0, 5);
-    setData(rows);
+    const from = new Date();
+    from.setDate(to.getDate() - days);
+    const rows = await getCourseTop({ from: from.toISOString(), to: to.toISOString(), limit });
+    setData(rows.map((r) => ({ name: r.name, mins: r.mins })));
   };
 
-  useEffect(() => { load(); const fn = () => load(); window.addEventListener('study-updated', fn); return () => window.removeEventListener('study-updated', fn); }, []);
+  useEffect(() => {
+    load();
+    const fn = () => load();
+    window.addEventListener('study-updated', fn);
+    return () => window.removeEventListener('study-updated', fn);
+  }, [days, limit]);
 
   return (
     <div style={{ width: '100%', height: 300 }}>
