@@ -21,6 +21,7 @@ A modern full‑stack study tracker built with Node.js, Express, MongoDB, and Re
 - Two study modes: normal timer and configurable Pomodoro
 - Course Management: create, edit, pick; link every session to a course
 - Analytics: 7‑day line chart, 7×24 heatmap, consecutive‑days streak
+- Team rooms: create/join rooms and sync real‑time focus/break status (Socket.IO)
 
 ### Demo Mode (one‑click)
 - On the login page, click "Demo Login" to enter directly — no signup needed.
@@ -63,6 +64,12 @@ VITE_API_BASE=http://localhost:4000/api
 - `GET /api/stats/study-7d` — last 7 days minutes by day.
 - `GET /api/stats/study-heatmap?from&to` — minutes by ISO day‑of‑week (1..7) and hour (0..23).
 - `GET /api/stats/study-by-hour?from&to` — total minutes by hour.
+
+## Endpoints (rooms)
+- `GET /api/rooms` — list rooms you joined.
+- `POST /api/rooms` — create a room `{ name }`.
+- `POST /api/rooms/join` — join a room by invite code `{ inviteCode }`.
+- `GET /api/rooms/:id` — room details and members (requires membership).
 
 ## Styling (Tailwind CSS)
 The frontend uses Tailwind. Classes are composed via `@apply` in `src/index.css` so JSX stays minimal. Config files:
