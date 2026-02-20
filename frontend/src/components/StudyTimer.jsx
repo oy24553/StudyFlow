@@ -1,18 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import client from '../api/client';
 import CoursePicker from './CoursePicker';
+import RoomPicker from './RoomPicker';
 import { notify } from '../utils/notify';
 import { ding } from '../utils/ding';
 import { showToast } from '../components/Toast';
+import { connectSocket } from '../realtime/socket';
 
 
 
 export default function StudyTimer() {
   // Shared
   const [courseId, setCourseId] = useState(localStorage.getItem('lastCourseId') || '');
+  const [roomId, setRoomId] = useState(localStorage.getItem('lastRoomId') || '');
   const [notes, setNotes] = useState('');
   const [mode, setMode] = useState('normal'); // 'normal' | 'pomodoro'
   const onCourseChange = (id) => { setCourseId(id || ''); localStorage.setItem('lastCourseId', id || ''); };
+  const onRoomChange = (id) => { setRoomId(id || ''); localStorage.setItem('lastRoomId', id || ''); };
 
   // Standard timer
   const [running, setRunning] = useState(false);
@@ -34,7 +38,15 @@ export default function StudyTimer() {
 
   // ===== Standard timer =====
   useEffect(() => { let id; if (running) { id = setInterval(() => setSeconds(s => s + 1), 1000); } return () => clearInterval(id); }, [running]);
-  const startNormal = () => { startRef.current = new Date(); setSeconds(0); setRunning(true); };
+  const startNormal = () => {
+    startRef.current = new Date();
+    setSeconds(0);
+    setRunning(true);
+    if (roomId) {
+      const s = connectSocket();
+      s.emit('status_update', { roomId, status: 'focus', phase: 'normal', remainSec: null });
+    }
+  };
   const stopNormal = async () => {
     setRunning(false);
     const payload = {
@@ -53,6 +65,10 @@ export default function StudyTimer() {
       const mins = Math.round((new Date() - startRef.current) / 60000);
       showToast(`Logged ${mins} minutes${courseId ? ' · course linked' : ''}`);
     } catch (e) { console.error(e); alert('Save failed'); }
+    if (roomId) {
+      const s = connectSocket();
+      s.emit('status_update', { roomId, status: 'idle', phase: '', remainSec: null });
+    }
   };
 
   // ===== Pomodoro timer =====
@@ -105,12 +121,33 @@ export default function StudyTimer() {
     setRemain(focusMins * 60);
     pStartRef.current = new Date();
     setPRunning(true);
+    if (roomId) {
+      const s = connectSocket();
+      s.emit('status_update', { roomId, status: 'focus', phase: 'focus', remainSec: focusMins * 60 });
+    }
   };
-  const stopPomodoro = () => { setPRunning(false); setRound(0); setPhase('focus'); setRemain(focusMins * 60); };
+  const stopPomodoro = () => {
+    setPRunning(false); setRound(0); setPhase('focus'); setRemain(focusMins * 60);
+    if (roomId) {
+      const s = connectSocket();
+      s.emit('status_update', { roomId, status: 'idle', phase: '', remainSec: null });
+    }
+  };
   const skipPomodoro = () => {
     if (!pRunning) return;
     setRemain(0); // trigger the phase switch logic above
   };
+
+  // Broadcast Pomodoro phase/remaining (throttled)
+  useEffect(() => {
+    if (!roomId || !pRunning) return;
+    // send every 5 seconds + last 3 seconds + exact phase start
+    const shouldSend = remain % 5 === 0 || remain <= 3;
+    if (!shouldSend) return;
+    const s = connectSocket();
+    const status = phase === 'focus' ? 'focus' : 'break';
+    s.emit('status_update', { roomId, status, phase, remainSec: remain });
+  }, [roomId, pRunning, phase, remain]);
 
   // ===== UI =====
   const mm = String(Math.floor(seconds / 60)).padStart(2, '0');
@@ -128,6 +165,10 @@ export default function StudyTimer() {
         <label className="vstack" style={{ minWidth: 240 }}>
           <span className="label">Course</span>
           <CoursePicker value={courseId} onChange={onCourseChange} allowNone />
+        </label>
+        <label className="vstack" style={{ minWidth: 240 }}>
+          <span className="label">Room (sync status)</span>
+          <RoomPicker value={roomId} onChange={onRoomChange} allowNone />
         </label>
         <label className="vstack">
           <span className="label">Mode</span>
