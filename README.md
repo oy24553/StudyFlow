@@ -22,6 +22,10 @@ A modern full‑stack study tracker built with Node.js, Express, MongoDB, and Re
 - Course Management: create, edit, pick; link every session to a course
 - Analytics: 7‑day line chart, 7×24 heatmap, consecutive‑days streak
 - Team rooms: create/join rooms and sync real‑time focus/break status (Socket.IO)
+- Advanced analytics:
+  - Longer-term trend (daily/weekly/monthly buckets)
+  - Top courses by study minutes
+  - Study method breakdown (deep / pomodoro / review)
 
 ### Demo Mode (one‑click)
 - On the login page, click "Demo Login" to enter directly — no signup needed.
@@ -53,11 +57,15 @@ PORT=4000
 MONGODB_URI=mongodb+srv://<user>:<pass>@<cluster>/<db>?retryWrites=true&w=majority
 JWT_SECRET=change_me_to_a_strong_random_value
 CORS_ORIGIN=http://localhost:5173
+# Optional: timezone used by some stats endpoints (default: UTC)
+STATS_TZ=UTC
 ```
 
 - Create `frontend/.env`:
 ```env
 VITE_API_BASE=http://localhost:4000/api
+# Optional: Socket.IO server URL (useful when frontend & backend are on different domains)
+VITE_WS_URL=http://localhost:4000
 ```
 
 ## Endpoints (stats)
@@ -73,6 +81,12 @@ VITE_API_BASE=http://localhost:4000/api
 - `POST /api/rooms` — create a room `{ name }`.
 - `POST /api/rooms/join` — join a room by invite code `{ inviteCode }`.
 - `GET /api/rooms/:id` — room details and members (requires membership).
+
+### Real‑time (Socket.IO)
+- Connect with auth token (JWT) and join a room:
+  - Event: `join_room` payload `{ roomId }`
+  - Server broadcasts: `presence` array of `{ userId, status, phase, remainSec, updatedAt }`
+- Presence is currently in-memory (single server instance). For multi-instance deployments, add a shared adapter (e.g. Redis) and persist presence.
 
 ## Styling (Tailwind CSS)
 The frontend uses Tailwind. Classes are composed via `@apply` in `src/index.css` so JSX stays minimal. Config files:
