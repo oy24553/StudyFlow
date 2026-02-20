@@ -1,10 +1,10 @@
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import useRipple from '../hooks/useRipple';
 
 export default function PrimaryButton({ children, className = '', ...props }) {
   const ref = useRipple();
   return (
-    <motion.button
+    <Motion.button
       ref={ref}
       whileHover={{ y: -1 }}
       whileTap={{ scale: 0.98 }}
@@ -12,6 +12,6 @@ export default function PrimaryButton({ children, className = '', ...props }) {
       {...props}
     >
       {children}
-    </motion.button>
+    </Motion.button>
   );
 }

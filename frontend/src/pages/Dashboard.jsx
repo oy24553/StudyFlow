@@ -7,9 +7,13 @@ import PageEnter from '../components/PageEnter';
 import AnimatedCard from '../components/AnimatedCard';
 import PrimaryButton from '../components/PrimaryButton';
 import ChartHeatmap from '../components/ChartHeatmap';
+import ChartMethodBreakdown from '../components/ChartMethodBreakdown';
+import ChartSeries from '../components/ChartSeries';
 
 export default function Dashboard() {
     const [stats, setStats] = useState({ weekMins: 0, streak: 0 });
+    const [seriesDays, setSeriesDays] = useState(90);
+    const [seriesBucket, setSeriesBucket] = useState('week'); // day | week | month
 
     const calc = (rows) => {
         const weekMins = Math.round(rows.reduce((s, r) => s + (r.total || r.mins || 0), 0));
@@ -59,7 +63,35 @@ export default function Dashboard() {
                     <ChartHeatmap days={30} />
                 </AnimatedCard>
 
-                {/* If adding a course top chart, also wrap it with <AnimatedCard delay={0.2}> */}
+                <AnimatedCard delay={0.25}>
+                    <div className="hstack" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+                        <div className="label">Longer-term trend</div>
+                        <div className="hstack" style={{ gap: 8, flexWrap: 'wrap' }}>
+                            <select className="input" value={String(seriesDays)} onChange={(e) => setSeriesDays(parseInt(e.target.value, 10))}>
+                                <option value="30">30 days</option>
+                                <option value="90">90 days</option>
+                                <option value="180">180 days</option>
+                            </select>
+                            <select className="input" value={seriesBucket} onChange={(e) => setSeriesBucket(e.target.value)}>
+                                <option value="day">Daily</option>
+                                <option value="week">Weekly</option>
+                                <option value="month">Monthly</option>
+                            </select>
+                        </div>
+                    </div>
+                    <ChartSeries days={seriesDays} bucket={seriesBucket} />
+                </AnimatedCard>
+
+                <div className="hstack" style={{ gap: 12, flexWrap: 'wrap' }}>
+                    <AnimatedCard delay={0.3} style={{ flex: 1, minWidth: 320 }}>
+                        <div className="label">Top courses (last 30 days)</div>
+                        <ChartCourseTop days={30} limit={5} />
+                    </AnimatedCard>
+                    <AnimatedCard delay={0.35} style={{ flex: 1, minWidth: 320 }}>
+                        <div className="label">Methods breakdown (last 30 days)</div>
+                        <ChartMethodBreakdown days={30} />
+                    </AnimatedCard>
+                </div>
             </div>
         </PageEnter>
     );

@@ -37,7 +37,6 @@ export default function Room() {
 
     s.emit('join_room', { roomId }, (ack) => {
       if (!ack?.ok) {
-        // eslint-disable-next-line no-alert
         alert(ack?.error || 'Failed to join room');
       }
     });
@@ -124,4 +123,3 @@ function fmtRemain(sec) {
   const ss = String(s % 60).padStart(2, '0');
   return `${mm}:${ss}`;
 }
-

@@ -5,4 +5,7 @@ router.use(auth);
 router.get('/study-7d', s.study7d);
 router.get('/study-heatmap', s.studyHeatmap);
 router.get('/study-by-hour', s.studyByHour);
+router.get('/course-top', s.courseTop);
+router.get('/method-breakdown', s.methodBreakdown);
+router.get('/study-series', s.studySeries);
 module.exports = router;
