@@ -35,19 +35,27 @@ export default function Chart7d() {
         return () => window.removeEventListener('study-updated', fn);
     }, []);
 
-    if (loading) return <div>Loading chart…</div>;
-    if (err) return <div>{err}</div>;
     if (loading) return <div className="card"><Skeleton height={220} radius={12} /></div>;
+    if (err) return <div className="empty"><div style={{ fontWeight: 800 }}>Could not load chart</div><div className="subtle">{err}</div></div>;
+    const total = data.reduce((s, r) => s + (r.mins || 0), 0);
+    if (!data.length || total <= 0) {
+        return (
+            <div className="empty">
+                <div style={{ fontWeight: 900 }}>No study data yet</div>
+                <div className="subtle">Start a timer to grow your forest.</div>
+            </div>
+        );
+    }
 
     return (
         <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
                 <LineChart data={data}>
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                     <XAxis dataKey="day" />
                     <YAxis tickFormatter={minsFmt} />
                     <Tooltip formatter={(v) => minsFmt(v)} labelFormatter={(l) => `Date: ${l}`} />
-                    <Line type="monotone" dataKey="mins" isAnimationActive animationDuration={600} animationBegin={0} />
+                    <Line type="monotone" dataKey="mins" stroke="var(--primary)" strokeWidth={2} dot={false} isAnimationActive animationDuration={600} animationBegin={0} />
                 </LineChart>
             </ResponsiveContainer>
         </div>

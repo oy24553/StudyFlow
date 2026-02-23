@@ -30,11 +30,11 @@ export default function ChartMethodBreakdown({ days = 30 }) {
     <div style={{ width: '100%', height: 260 }}>
       <ResponsiveContainer>
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis dataKey="method" />
           <YAxis tickFormatter={minsFmt} />
           <Tooltip formatter={(v) => minsFmt(v)} />
-          <Bar dataKey="mins" />
+          <Bar dataKey="mins" fill="var(--accent)" />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -47,4 +47,3 @@ function minsFmt(m) {
   const rest = mm % 60;
   return h ? `${h}h ${rest}m` : `${rest}m`;
 }
-

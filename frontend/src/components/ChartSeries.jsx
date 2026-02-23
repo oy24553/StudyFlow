@@ -41,11 +41,11 @@ export default function ChartSeries({ days = 90, bucket = 'day' }) {
     <div style={{ width: '100%', height: 280 }}>
       <ResponsiveContainer>
         <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis dataKey="t" />
           <YAxis tickFormatter={minsFmt} />
           <Tooltip formatter={(v) => minsFmt(v)} />
-          <Line type="monotone" dataKey="mins" isAnimationActive animationDuration={600} animationBegin={0} />
+          <Line type="monotone" dataKey="mins" stroke="var(--primary)" strokeWidth={2} dot={false} isAnimationActive animationDuration={600} animationBegin={0} />
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -65,4 +65,3 @@ function minsFmt(m) {
   const rest = mm % 60;
   return h ? `${h}h ${rest}m` : `${rest}m`;
 }
-

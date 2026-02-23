@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import client from '../api/client';
 import CoursePicker from './CoursePicker';
 import RoomPicker from './RoomPicker';
+import ForestPlant from './ForestPlant';
 import { notify } from '../utils/notify';
 import { ding } from '../utils/ding';
 import { showToast } from '../components/Toast';
@@ -157,9 +158,10 @@ export default function StudyTimer() {
   const rMM = String(rMin).padStart(2, '0'), rSS = String(rSec).padStart(2, '0');
   const totalPhase = (phase === 'focus' ? focusMins : phase === 'break' ? breakMins : longBreakMins) * 60;
   const pct = totalPhase ? Math.round((totalPhase - remain) / totalPhase * 100) : 0;
+  const normalPct = running ? Math.min(100, Math.round((seconds / (50 * 60)) * 100)) : 0; // soft goal: 50min
 
   return (
-    <div className="card vstack" style={{ gap: 12 }}>
+    <div className="card vstack timer-forest">
       {/* Course / Notes */}
       <div className="hstack" style={{ gap: 12, flexWrap: 'wrap' }}>
         <label className="vstack" style={{ minWidth: 240 }}>
@@ -204,30 +206,46 @@ export default function StudyTimer() {
 
       {/* Timer display */}
       {mode === 'normal' ? (
-        <div className="hstack" style={{ justifyContent: 'space-between' }}>
-          <div className="vstack"><span className="label">Study timer</span><div className="timer">{mm}:{ss}</div></div>
-          {!running
-            ? <button className="btn btn-primary" onClick={startNormal}>Start study</button>
-            : <button className="btn btn-primary" onClick={stopNormal}>Stop and save</button>}
-        </div>
-      ) : (
-        <div className="hstack" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-          <div className="hstack" style={{ gap: 16, alignItems: 'center' }}>
-            <div className="ring" style={{ '--pct': `${pct}%` }}><div className="ring-num">{rMM}:{rSS}</div></div>
-            <div className="vstack">
-              <div className="label">Current phase</div>
-              <div style={{ fontWeight: 700 }}>{phase === 'focus' ? 'Focus' : phase === 'break' ? 'Break' : 'Long break'}</div>
-              <div className="label">Pomodoros completed: {round}</div>
+        <div className="forest-main">
+          <ForestPlant pct={normalPct} active={running} variant="focus" />
+          <div className="vstack" style={{ gap: 10 }}>
+            <div className="forest-meta">
+              <div className="vstack" style={{ gap: 2 }}>
+                <div className="label">Study timer</div>
+                <div className="timer-big">{mm}:{ss}</div>
+                <div className="subtle">{running ? 'Keep going — your tree is growing.' : 'Start a session to plant a tree.'}</div>
+              </div>
+              {!running
+                ? <button className="btn btn-primary" onClick={startNormal}>Start</button>
+                : <button className="btn btn-primary" onClick={stopNormal}>Stop & save</button>}
             </div>
           </div>
-          <div className="hstack" style={{ gap: 8 }}>
-            {!pRunning
-              ? <button className="btn btn-primary" onClick={startPomodoro}>Start Pomodoro</button>
-              : <>
-                <button className="btn" onClick={skipPomodoro}>Skip current</button>
-                <button className="btn btn-danger" onClick={stopPomodoro}>Stop</button>
-              </>
-            }
+        </div>
+      ) : (
+        <div className="forest-main">
+          <ForestPlant pct={pct} active={pRunning} variant={phase === 'focus' ? 'focus' : phase === 'break' ? 'break' : 'long'} />
+          <div className="vstack" style={{ gap: 10 }}>
+            <div className="forest-meta">
+              <div className="hstack" style={{ gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+                <div className="ring" style={{ '--pct': `${pct}%` }}><div className="ring-num">{rMM}:{rSS}</div></div>
+                <div className="vstack" style={{ gap: 2 }}>
+                  <div className="label">Current phase</div>
+                  <div style={{ fontWeight: 900, fontSize: 18 }}>
+                    {phase === 'focus' ? 'Focus' : phase === 'break' ? 'Break' : 'Long break'}
+                  </div>
+                  <div className="subtle">Pomodoros completed: {round}</div>
+                </div>
+              </div>
+              <div className="hstack" style={{ gap: 8 }}>
+                {!pRunning
+                  ? <button className="btn btn-primary" onClick={startPomodoro}>Start</button>
+                  : <>
+                    <button className="btn" onClick={skipPomodoro}>Skip</button>
+                    <button className="btn btn-danger" onClick={stopPomodoro}>Stop</button>
+                  </>
+                }
+              </div>
+            </div>
           </div>
         </div>
       )}
