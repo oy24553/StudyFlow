@@ -24,11 +24,11 @@ export default function ChartCourseTop({ days = 30, limit = 5 }) {
     <div style={{ width: '100%', height: 300 }}>
       <ResponsiveContainer>
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Bar dataKey="mins" />
+          <Bar dataKey="mins" fill="var(--primary)" />
         </BarChart>
       </ResponsiveContainer>
     </div>

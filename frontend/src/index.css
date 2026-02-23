@@ -1,32 +1,35 @@
 /* ===== Base & Theme Variables ===== */
 :root {
   /* Colors */
-  --bg: #f6f7f9;
-  --card: #ffffff;
-  --text: #111827;
-  --muted: #667085;
-  --border: #e5e7eb;
-  --primary: #6366f1;
-  /* Primary (Indigo) */
-  --primary-weak: rgba(99, 102, 241, .12);
+  --bg: #f2f7f3;
+  --card: rgba(255, 255, 255, .92);
+  --text: #0b1b13;
+  --muted: #4c6b5d;
+  --border: rgba(15, 23, 42, .10);
+  --primary: #15803d; /* Forest green */
+  --primary-weak: rgba(21, 128, 61, .12);
+  --accent: #0f766e;  /* Teal */
+  --accent-weak: rgba(15, 118, 110, .12);
   --danger: #ef4444;
+  --warn: #b45309;
 
   /* Appearance */
-  --radius: 12px;
-  --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .10);
-  --focus: 0 0 0 3px rgba(99, 102, 241, .35);
+  --radius: 14px;
+  --shadow: 0 10px 30px rgba(16, 24, 40, .06), 0 2px 8px rgba(16, 24, 40, .06);
+  --focus: 0 0 0 4px rgba(34, 197, 94, .22);
 
   /* Sizing */
-  --container: 1100px;
+  --container: 1120px;
 }
 
 html.dark {
-  --bg: #0b0e14;
-  --card: #0f1420;
-  --text: #e5e7eb;
-  --muted: #94a3b8;
-  --border: #1f2937;
-  --primary-weak: rgba(99, 102, 241, .18);
+  --bg: #07110c;
+  --card: rgba(12, 24, 18, .78);
+  --text: #e7f3ee;
+  --muted: #a7c0b4;
+  --border: rgba(148, 163, 184, .18);
+  --primary-weak: rgba(34, 197, 94, .18);
+  --accent-weak: rgba(45, 212, 191, .14);
   --shadow: none;
 }
 
@@ -36,7 +39,10 @@ html.dark {
 
 body {
   margin: 0;
-  background: var(--bg);
+  background:
+    radial-gradient(1200px 650px at 15% -10%, rgba(34, 197, 94, .18), rgba(34, 197, 94, 0) 62%),
+    radial-gradient(1100px 600px at 110% 10%, rgba(15, 118, 110, .14), rgba(15, 118, 110, 0) 58%),
+    var(--bg);
   color: var(--text);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   -webkit-font-smoothing: antialiased;
@@ -58,6 +64,7 @@ body {
   box-shadow: var(--shadow);
   overflow-x: auto;
   /* Tables can scroll horizontally on small screens */
+  backdrop-filter: saturate(1.2) blur(8px);
 }
 
 .hstack {
@@ -120,14 +127,14 @@ body {
   padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: #fff;
+  background: var(--card);
   color: inherit;
   outline: none;
   transition: box-shadow .15s ease, border-color .15s ease, background-color .15s ease;
 }
 
 html.dark .input {
-  background: #0f1420;
+  background: rgba(7, 17, 12, .42);
 }
 
 .input:focus {
@@ -149,18 +156,18 @@ input.input::placeholder {
   padding: 0 12px;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: #fff;
+  background: var(--card);
   color: inherit;
   cursor: pointer;
   transition: background-color .15s ease, border-color .15s ease, color .15s ease, transform .02s ease;
 }
 
 html.dark .btn {
-  background: #0f1420;
+  background: rgba(7, 17, 12, .42);
 }
 
 .btn:hover {
-  background: #f3f4f6;
+  background: rgba(15, 23, 42, .04);
 }
 
 .btn:active {
@@ -200,7 +207,7 @@ html.dark .btn {
   position: relative;
   border-color: transparent;
   color: #fff;
-  background: linear-gradient(110deg, #7c3aed, #6366f1, #06b6d4);
+  background: linear-gradient(110deg, #15803d, #0f766e, #16a34a);
   background-size: 200% 100%;
   animation: demo-gradient 6s ease-in-out infinite;
 }
@@ -225,7 +232,7 @@ html.dark .btn {
   font-size: 12px;
   border-radius: 999px;
   background: var(--primary-weak);
-  color: #3730a3;
+  color: var(--primary);
 }
 
 /* ===== Tables ===== */
@@ -243,7 +250,7 @@ html.dark .btn {
 }
 
 .table tbody tr:hover {
-  background: #fafafa;
+  background: rgba(15, 23, 42, .03);
 }
 
 html.dark .table tbody tr:hover {
@@ -402,7 +409,7 @@ html.dark .skeleton {
   height: 10px;
   width: 120px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(99, 102, 241, .05), rgba(99, 102, 241, .25), rgba(99, 102, 241, .6), rgba(99, 102, 241, 1));
+  background: linear-gradient(90deg, rgba(21, 128, 61, .06), rgba(21, 128, 61, .25), rgba(21, 128, 61, .6), rgba(21, 128, 61, 1));
 }
 
 /* === Pomodoro circular progress (pure CSS conic-gradient) === */
@@ -422,4 +429,101 @@ html.dark .skeleton {
 .ring-num {
   font-variant-numeric: tabular-nums;
   font-weight: 800;
+}
+
+/* ===== Forest Timer ===== */
+.timer-forest {
+  gap: 14px;
+}
+
+.forest-main {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 14px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .forest-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.forest-plant {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(120px 90px at 50% 30%, rgba(34, 197, 94, .22), rgba(34, 197, 94, 0) 60%),
+    radial-gradient(120px 90px at 55% 70%, rgba(15, 118, 110, .12), rgba(15, 118, 110, 0) 60%),
+    var(--card);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.forest-plant::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 16px;
+  background:
+    conic-gradient(from 180deg, rgba(34, 197, 94, .45), rgba(15, 118, 110, .22), rgba(34, 197, 94, .45));
+  opacity: calc(var(--active, 0) * .25);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.forest-plant svg {
+  width: 96px;
+  height: 96px;
+  z-index: 1;
+}
+
+.forest-plant .canopy {
+  transform-origin: 50% 85%;
+}
+
+.forest-plant.active .canopy {
+  animation: canopy-sway 2.8s ease-in-out infinite;
+}
+
+@keyframes canopy-sway {
+  0% { transform: rotate(-1.5deg) translateY(0); }
+  50% { transform: rotate(1.5deg) translateY(-1px); }
+  100% { transform: rotate(-1.5deg) translateY(0); }
+}
+
+.forest-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.timer-big {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1.0;
+}
+
+.subtle {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.empty {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 22px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  background: rgba(21, 128, 61, .04);
 }

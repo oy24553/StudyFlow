@@ -6,6 +6,7 @@ const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']; // ISO week: 1..7
 export default function ChartHeatmap({ days = 30 }){
   const [grid, setGrid] = useState(Array.from({length:7}, ()=>Array(24).fill(0)));
   const [maxM, setMaxM] = useState(60);
+  const [empty, setEmpty] = useState(false);
 
   const load = async () => {
     const to = new Date();
@@ -20,10 +21,20 @@ export default function ChartHeatmap({ days = 30 }){
       if (g[d][h] > mx) mx = g[d][h];
     }
     setGrid(g);
+    setEmpty(!rows.length || mx <= 0);
     setMaxM(Math.max(30, Math.min(120, mx))); // Color cap: auto between 30~120 minutes
   };
 
   useEffect(()=>{ load(); const fn=()=>load(); window.addEventListener('study-updated', fn); return ()=>window.removeEventListener('study-updated', fn); }, [days]);
+
+  if (empty) {
+    return (
+      <div className="empty">
+        <div style={{ fontWeight: 900 }}>No heatmap data yet</div>
+        <div className="subtle">Once you log sessions, your week will start to bloom.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="vstack">
@@ -34,14 +45,21 @@ export default function ChartHeatmap({ days = 30 }){
         {Array.from({length:24},(_,h)=><div key={'h'+h} className="heat-hour">{h}</div>)}
 
         {/* Rows: Monday..Sunday */}
-        {grid.map((row, di)=>(
-          <>
-            <div key={'dlabel'+di} className="heat-day">{DAYS[di]}</div>
-            {row.map((mins, hi)=>{
+        {grid.map((row, di) => (
+          <div key={`row-${di}`} style={{ display: 'contents' }}>
+            <div className="heat-day">{DAYS[di]}</div>
+            {row.map((mins, hi) => {
               const alpha = Math.min(1, mins / maxM); // 0..1
-              return <div key={`c${di}-${hi}`} className="heat-cell" style={{'--alpha': alpha, '--hint': `"${mins}m"`}} title={`${mins} minutes`} />;
+              return (
+                <div
+                  key={`c${di}-${hi}`}
+                  className="heat-cell"
+                  style={{ '--alpha': alpha, '--hint': `"${mins}m"` }}
+                  title={`${mins} minutes`}
+                />
+              );
             })}
-          </>
+          </div>
         ))}
       </div>
 
